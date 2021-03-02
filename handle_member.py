@@ -1,6 +1,6 @@
 from extensions import db
-from flask import Blueprint
-from flask_restful import Resource, reqparse, abort, fields, marshal_with
+from flask import Blueprint, abort, make_response, jsonify
+from flask_restful import Resource, reqparse, fields, marshal_with
 
 member_api = Blueprint('member_api', __name__)
 
@@ -57,7 +57,7 @@ class Member(Resource):
 	def get(member_id):				# video_id = request argument
 		result = MemberModel.query.filter_by(id=member_id).first()
 		if not result:
-			abort(404, message="Member with ID not found")
+			abort(make_response(jsonify(message="Member with ID not found"), 404))
 		return result
 
 	@member_api.route("/member/<int:member_id>")
@@ -66,7 +66,7 @@ class Member(Resource):
 		args = video_put_args.parse_args()     # all request arguments from video_put_args
 		result = MemberModel.query.filter_by(id=member_id).first()
 		if result:
-			abort(409, message="Videos ID taken.")
+			abort(make_response(jsonify(message="Member with ID taken"), 409))
 		member = MemberModel(id=member_id, name=args['name'], contact=args['contact'], gender=args['gender'], trainer=args['trainer'], membership=args['membership'], balance=args['balance'], status=args['status'], start_date=args['start_date'], )
 		db.session.add(member)
 		db.session.commit()
@@ -105,7 +105,7 @@ class Member(Resource):
 	def delete(member_id):
 		result = MemberModel.query.filter_by(id=member_id).first()
 		if not result:
-			abort(404, message="Videos with ID not found.")
+			abort(make_response(jsonify(message="Member with ID not found"), 404))
 		MemberModel.query.filter_by(id=member_id).delete()
 		db.session.commit()
 		return result, 204
