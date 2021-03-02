@@ -24,4 +24,4 @@ def register_extensions(app):
 		db.create_all()
 
 
-app1 = create_app()
+app = create_app()
