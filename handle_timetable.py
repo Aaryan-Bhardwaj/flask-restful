@@ -19,7 +19,7 @@ class TimeTable(db.Model):
 class News(Resource):
     @timetable_api.route("/timetable/<int:member_id>", methods=['GET'])
     def get(member_id):
-        data = pd.read_excel("time_table.xlsx")
+        data = pd.read_excel("time_table.xlsx", engine='openpyxl')
         table = data[data['ID'] == member_id]
         if table['ID'].empty:
             return {'message': "Time Table doesn't exist...."}
