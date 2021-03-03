@@ -24,7 +24,7 @@ resource_fields = {
 }
 
 
-class News(Resource):
+class Password(Resource):
     @password_api.route("/pass/<int:member_id>", methods=['GET'])
     @marshal_with(resource_fields)
     def get(member_id):
@@ -37,7 +37,7 @@ class News(Resource):
     @marshal_with(resource_fields)
     def put(member_id):
         args = news_put_args.parse_args()
-        result = NewsModel.query.filter_by(id=member_id).first()
+        result = PasswordModel.query.filter_by(id=member_id).first()
         if result:
             if args['password']:
                 result.password = args['password']
