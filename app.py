@@ -13,6 +13,7 @@ def create_app():
 	app.register_blueprint(member_api)
 	app.register_blueprint(news_api)
 	app.register_blueprint(timetable_api)
+	app.register_blueprint(password_api)
 	if __name__ == "__main__":
 		app.run(debug=True)
 	return app
