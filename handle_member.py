@@ -52,7 +52,7 @@ resource_fields = {
 
 
 class Member(Resource):
-	@member_api.route("/member/<int:member_id>")
+	@member_api.route("/member/<int:member_id>", methods=['GET'])
 	@marshal_with(resource_fields)			# serializes return object. see result is in db format.
 	def get(member_id):				# video_id = request argument
 		result = MemberModel.query.filter_by(id=member_id).first()
@@ -60,7 +60,7 @@ class Member(Resource):
 			abort(make_response(jsonify(message="Member with ID not found"), 404))
 		return result
 
-	@member_api.route("/member/<int:member_id>")
+	@member_api.route("/member/<int:member_id>", methods=['PUT'])
 	@marshal_with(resource_fields)
 	def put(member_id):
 		args = video_put_args.parse_args()     # all request arguments from video_put_args
@@ -72,7 +72,7 @@ class Member(Resource):
 		db.session.commit()
 		return member, 201
 
-	@member_api.route("/member/<int:member_id>")
+	@member_api.route("/member/<int:member_id>", methods=['PATCH'])
 	@marshal_with(resource_fields)
 	def patch(member_id):
 		args = video_update_args.parse_args()
@@ -100,7 +100,7 @@ class Member(Resource):
 		db.session.commit()
 		return result, 200
 
-	@member_api.route("/member/<int:member_id>")
+	@member_api.route("/member/<int:member_id>", methods=['DELETE'])
 	@marshal_with(resource_fields)
 	def delete(member_id):
 		result = MemberModel.query.filter_by(id=member_id).first()
