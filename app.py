@@ -2,6 +2,7 @@ from flask import Flask
 from handle_member import member_api
 from handle_news import news_api
 from handle_timetable import timetable_api
+from handle_password import password_api
 from config import config
 
 
