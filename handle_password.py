@@ -32,12 +32,27 @@ class News(Resource):
         if not result:
             abort(make_response(jsonify(message="Password no exist.."), 404))
         return result
-
+    
     @password_api.route("/pass/<int:member_id>", methods=['PUT'])
     @marshal_with(resource_fields)
     def put(member_id):
         args = news_put_args.parse_args()
-        passw = PasswordModel(id=member_id, password=args['password'])
-        db.session.add(passw)
+        result = NewsModel.query.filter_by(id=member_id).first()
+        if result:
+            if args['password']:
+                result.password = args['password']
+        else:
+            result = PasswordModel(id=member_id, password=args['password'])
+            db.session.add(result)
+        
         db.session.commit()
-        return passw, 201
+        return result, 201
+
+#     @password_api.route("/pass/<int:member_id>", methods=['PUT'])
+#     @marshal_with(resource_fields)
+#     def put(member_id):
+#         args = news_put_args.parse_args()
+#         passw = PasswordModel(id=member_id, password=args['password'])
+#         db.session.add(passw)
+#         db.session.commit()
+#         return passw, 201
