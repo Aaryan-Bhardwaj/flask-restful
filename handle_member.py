@@ -10,32 +10,32 @@ class MemberModel(db.Model):
 	name = db.Column(db.String(100), nullable=False)
 	contact = db.Column(db.Integer, nullable=False)
 	gender = db.Column(db.String(1), nullable=False)
-	trainer = db.Column(db.String(100), nullable=False)
 	membership = db.Column(db.String(100), nullable=False)
 	balance = db.Column(db.Integer, nullable=False)
 	status = db.Column(db.String(15), nullable=False)
 	start_date = db.Column(db.String(8), nullable=False)
+	end_date = db.Column(db.String(8), nullable=False)
 
 
 video_put_args = reqparse.RequestParser()
-video_put_args.add_argument("name", type=str, help="Name of guy missing", required=True)
-video_put_args.add_argument("contact", type=int, help="Age of guy missing", required=True)
-video_put_args.add_argument("gender", type=str, help="Weight of guy missing", required=True)
-video_put_args.add_argument("trainer", type=str, help="Height of guy missing", required=True)
-video_put_args.add_argument("membership", type=str, help="Height of guy missing", required=True)
-video_put_args.add_argument("balance", type=int, help="Height of guy missing", required=True)
-video_put_args.add_argument("status", type=str, help="Height of guy missing", required=True)
-video_put_args.add_argument("start_date", type=str, help="Height of guy missing", required=True)
+video_put_args.add_argument("name", type=str, help="Name of member missing", required=True)
+video_put_args.add_argument("contact", type=int, help="Contact of member missing", required=True)
+video_put_args.add_argument("gender", type=str, help="Gender of member missing", required=True)
+video_put_args.add_argument("membership", type=str, help="Membership of member missing", required=True)
+video_put_args.add_argument("balance", type=int, help="Balance of member missing", required=True)
+video_put_args.add_argument("status", type=str, help="Status of member missing", required=True)
+video_put_args.add_argument("start_date", type=str, help="Start date missing", required=True)
+video_put_args.add_argument("end_date", type=str, help="End date missing", required=True)
 
 video_update_args = reqparse.RequestParser()
 video_update_args.add_argument("name", type=str, help="Name of guy missing")
 video_update_args.add_argument("contact", type=int, help="Age of guy missing")
 video_update_args.add_argument("gender", type=str, help="Weight of guy missing")
-video_update_args.add_argument("trainer", type=str, help="Height of guy missing")
 video_update_args.add_argument("membership", type=str, help="Height of guy missing")
 video_update_args.add_argument("balance", type=int, help="Height of guy missing")
 video_update_args.add_argument("status", type=str, help="Height of guy missing")
 video_update_args.add_argument("start_date", type=str, help="Height of guy missing")
+video_update_args.add_argument("end_date", type=str, help="Height of guy missing")
 
 
 resource_fields = {
@@ -43,11 +43,11 @@ resource_fields = {
 	'name': fields.String,
 	'contact': fields.Integer,
 	'gender': fields.String,
-	'trainer': fields.String,
 	'membership': fields.String,
 	'balance': fields.Integer,
 	'status': fields.String,
 	'start_date': fields.String,
+	'end_date': fields.String,
 }
 
 
@@ -67,7 +67,7 @@ class Member(Resource):
 		result = MemberModel.query.filter_by(id=member_id).first()
 		if result:
 			abort(make_response(jsonify(message="Member with ID taken"), 409))
-		member = MemberModel(id=member_id, name=args['name'], contact=args['contact'], gender=args['gender'], trainer=args['trainer'], membership=args['membership'], balance=args['balance'], status=args['status'], start_date=args['start_date'], )
+		member = MemberModel(id=member_id, name=args['name'], contact=args['contact'], gender=args['gender'], membership=args['membership'], balance=args['balance'], status=args['status'], start_date=args['start_date'], end_date=args['end_date'],)
 		db.session.add(member)
 		db.session.commit()
 		return member, 201
@@ -86,8 +86,6 @@ class Member(Resource):
 			result.contact = args['contact']
 		if args['gender']:
 			result.gender = args['gender']
-		if args['trainer']:
-			result.trainer = args['trainer']
 		if args['membership']:
 			result.membership = args['membership']
 		if args['balance']:
@@ -96,6 +94,8 @@ class Member(Resource):
 			result.status = args['status']
 		if args['start_date']:
 			result.start_date = args['start_date']
+		if args['end_date']:
+			result.end_date = args['end_date']
 
 		db.session.commit()
 		return result, 200
