@@ -22,9 +22,9 @@ def create_app():
 def register_extensions(app):
 	from extensions import db  # db store to variable
 	db.init_app(app)
-	with app.app_context():
+# 	with app.app_context():
 # 		db.drop_all()
-		db.create_all(bind='passworddb')
+# 		db.create_all(bind='passworddb')
 
 
 app = create_app()
